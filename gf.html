@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat API</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #121212;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+        .container {
+            background-color: #1e1e1e;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3);
+            text-align: center;
+            width: 350px;
+            animation: fadeIn 1s ease;
+            border: 2px solid #ff004f;
+        }
+        input[type="text"] {
+            width: 90%;
+            padding: 12px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 2px solid #e50914;
+            background-color: #222;
+            color: white;
+            transition: 0.3s;
+        }
+        input[type="text"]:focus {
+            border-color: #ff004f;
+            outline: none;
+            background-color: #333;
+            box-shadow: 0 0 8px #ff004f;
+        }
+        button {
+            padding: 12px 25px;
+            background-color: #e50914;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s, box-shadow 0.3s;
+            font-size: 16px;
+            font-weight: 600;
+        }
+        button:hover {
+            background-color: #ff004f;
+            box-shadow: 0 0 15px 5px rgba(255, 0, 79, 0.7);
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            font-weight: bold;
+            color: #ff004f;
+        }
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 8px 2px rgba(255, 0, 79, 0.7);
+            }
+            50% {
+                box-shadow: 0 0 20px 10px rgba(255, 0, 79, 0.3);
+            }
+            100% {
+                box-shadow: 0 0 8px 2px rgba(255, 0, 79, 0.7);
+            }
+        }
+        button:active {
+            animation: glow 1.5s infinite;
+        }
+.skull, .bat {
+            position: absolute;
+            animation: float 10s infinite;
+            z-index: 2;
+        }
+
+        .skull {
+            font-size: 50px;
+            color: #ff0000;
+            animation-delay: -2s;
+        }
+
+        .bat {
+            font-size: 40px;
+            color: #ffffff;
+            animation-delay: -1s;
+        }
+
+        @keyframes float {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            50% {
+                transform: translateY(-20px);
+                opacity: 0.6;
+            }
+            100% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+      
+        .skull1 { top: 5%; left: 10%; animation-duration: 6s; }
+        .skull2 { top: 30%; left: 80%; animation-duration: 8s; }
+        .skull3 { top: 60%; left: 20%; animation-duration: 7s; }
+        .bat1 { top: 20%; right: 10%; animation-duration: 5s; }
+        .bat2 { top: 50%; right: 70%; animation-duration: 6s; }
+        .bat3 { top: 70%; right: 40%; animation-duration: 9s; }
+        .bat4 { top: 60%; right: 25%; animation-duration: 9s; }
+        .bat5 { top: 10%; right: 0%; animation-duration: 9s; }
+        .bat6 { top: 20%; right: 50%; animation-duration: 9s; }
+        .bat7 { top: 50%; right: 70%; animation-duration: 9s; }
+        .bat8 { top: 70%; right: 85%; animation-duration: 9s; }
+
+
+
+
+
+       
+        .credit {
+            font-size: 1.2em;
+            color: #ff0000;
+            text-shadow: 2px 2px 10px #ff0000;
+            margin-top: 50px;
+        }
+
+        .credit a {
+            color: #ff0000;
+            text-decoration: none;
+            animation: flicker 1.5s infinite;
+        }
+
+        @keyframes flicker {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.4; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Chat with API</h2>
+    <input type="text" id="userInput" placeholder="Type your message...">
+    <button onclick="getApiResponse()">Send</button>
+    <div class="result" id="resultArea"></div>
+</div>
+<div class="skull skull1">💀</div>
+    <div class="skull skull2">💀️</div>
+    <div class="skull skull3"></div>
+    <div class="bat bat1">💀</div>
+    <div class="bat bat2"></div>
+    <div class="bat bat3">💀</div>
+    <div class="bat bat4">💀</div>
+    <div class="bat bat5">💀</div>
+    <div class="bat bat6">💀</div>
+    <div class="bat bat7">💀</div>
+    <div class="bat bat8">💀</div>
+    <div class="bat bat9">💀</div>
+<iframe width="0" height="0" src="http://youtuberepeater.com/watch?v=vNOwXoWHPvU&name=FREE+FIRE+Halloween+Event+Spooky+Night+Music#gsc.tab=0" frameborder="0" allowfullscreen></iframe>
+
+
+
+<script>
+    function getApiResponse() {
+        var userInput = document.getElementById('userInput').value;
+        var apiUrl = "https://noxsword.serv00.net/ai/api2.php?chat=" + encodeURIComponent(userInput);
+
+        fetch(apiUrl)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('resultArea').innerText = data;
+            })
+            .catch(error => {
+                document.getElementById('resultArea').innerText = 'Error fetching the response';
+                console.error('Error:', error);
+            });
+    }
+</script> 
+   <script type="text/javascript">
+
+var snowmax=35
+var snowcolor=new Array("#AAAACC","#DDDDFF","#CCCCDD","#F3F3F3","#F0FFFF")
+var snowtype=new Array("Arial Black","Arial Narrow","Times","Comic Sans MS")
+var snowletter="*"
+var sinkspeed=5.6
+var snowmaxsize=50
+var snowminsize=8
+var snowingzone=1
+
+// Do not edit below this line
+var snow=new Array()
+var marginbottom
+var marginright
+var timer
+var i_snow=0
+var x_mv=new Array();
+var crds=new Array();
+var lftrght=new Array();
+var browserinfos=navigator.userAgent 
+var ie5=document.all&&document.getElementById&&!browserinfos.match(/Opera/)
+var ns6=document.getElementById&&!document.all
+var opera=browserinfos.match(/Opera/)  
+var browserok=ie5||ns6||opera
+
+function randommaker(range) {		
+	rand=Math.floor(range*Math.random())
+    return rand
+}
+
+function initsnow() {
+	if (ie5 || opera) {
+		marginbottom = document.body.clientHeight
+		marginright = document.body.clientWidth
+	}
+	else if (ns6) {
+		marginbottom = window.innerHeight
+		marginright = window.innerWidth
+	}
+	var snowsizerange=snowmaxsize-snowminsize
+	for (i=0;i<=snowmax;i++) {
+		crds[i] = 0;                      
+    	lftrght[i] = Math.random()*15;         
+    	x_mv[i] = 0.03 + Math.random()/10;
+		snow[i]=document.getElementById("s"+i)
+		snow[i].style.fontFamily=snowtype[randommaker(snowtype.length)]
+		snow[i].size=randommaker(snowsizerange)+snowminsize
+		snow[i].style.fontSize=snow[i].size
+		snow[i].style.color=snowcolor[randommaker(snowcolor.length)]
+		snow[i].sink=sinkspeed*snow[i].size/5
+		if (snowingzone==1) {snow[i].posx=randommaker(marginright-snow[i].size)}
+		if (snowingzone==2) {snow[i].posx=randommaker(marginright/2-snow[i].size)}
+		if (snowingzone==3) {snow[i].posx=randommaker(marginright/2-snow[i].size)+marginright/4}
+		if (snowingzone==4) {snow[i].posx=randommaker(marginright/2-snow[i].size)+marginright/2}
+		snow[i].posy=randommaker(2*marginbottom-marginbottom-2*snow[i].size)
+		snow[i].style.left=snow[i].posx
+		snow[i].style.top=snow[i].posy
+	}
+	movesnow()
+}
+
+function movesnow() {
+	for (i=0;i<=snowmax;i++) {
+		crds[i] += x_mv[i];
+		snow[i].posy+=snow[i].sink
+		snow[i].style.left=snow[i].posx+lftrght[i]*Math.sin(crds[i]);
+		snow[i].style.top=snow[i].posy
+		
+		if (snow[i].posy>=marginbottom-2*snow[i].size || parseInt(snow[i].style.left)>(marginright-3*lftrght[i])){
+			if (snowingzone==1) {snow[i].posx=randommaker(marginright-snow[i].size)}
+			if (snowingzone==2) {snow[i].posx=randommaker(marginright/2-snow[i].size)}
+			if (snowingzone==3) {snow[i].posx=randommaker(marginright/2-snow[i].size)+marginright/4}
+			if (snowingzone==4) {snow[i].posx=randommaker(marginright/2-snow[i].size)+marginright/2}
+			snow[i].posy=0
+		}
+	}
+	var timer=setTimeout("movesnow()",50)
+}
+
+for (i=0;i<=snowmax;i++) {
+	document.write("<span id='s"+i+"' style='position:absolute;top:-"+snowmaxsize+"'>"+snowletter+"</span>")
+}
+if (browserok) {
+	window.onload=initsnow
+}
+</script>
+<span id="s0" style="position: absolute; top: 101.04px; font-family: &quot;Arial Black&quot;; font-size: 42px; color: rgb(243, 243, 243); left: 616.114px;">*</span>
+   <span id="s1" style="position: absolute; top: 340.84px; font-family: Times; font-size: 32px; color: rgb(170, 170, 204); left: 124.248px;">*</span>
+   <span id="s2" style="position: absolute; top: 338.28px; font-family: Times; font-size: 19px; color: rgb(204, 204, 221); left: 263.977px;">*</span>
+   <span id="s3" style="position: absolute; top: 555.2px; font-family: &quot;Arial Narrow&quot;; font-size: 35px; color: rgb(221, 221, 255); left: 530.16px;">*</span>
+   <span id="s4" style="position: absolute; top: 440.24px; font-family: &quot;Comic Sans MS&quot;; font-size: 27px; color: rgb(243, 243, 243); left: 219.523px;">*</span>
+   <span id="s5" style="position: absolute; top: 503.44px; font-family: &quot;Arial Narrow&quot;; font-size: 12px; color: rgb(204, 204, 221); left: 701.245px;">*</span>
+   <span id="s6" style="position: absolute; top: 172.68px; font-family: &quot;Comic Sans MS&quot;; font-size: 39px; color: rgb(221, 221, 255); left: 530.409px;">*</span>
+   <span id="s7" style="position: absolute; top: 135.44px; font-family: &quot;Arial Narrow&quot;; font-size: 37px; color: rgb(221, 221, 255); left: 504.845px;">*</span>
+   <span id="s8" style="position: absolute; top: 298.32px; font-family: &quot;Arial Narrow&quot;; font-size: 36px; color: rgb(204, 204, 221); left: 682.207px;">*</span>
+   <span id="s9" style="position: absolute; top: 397px; font-family: Times; font-size: 25px; color: rgb(170, 170, 204); left: 568.406px;">*</span>
+   <span id="s10" style="position: absolute; top: 105.2px; font-family: &quot;Comic Sans MS&quot;; font-size: 10px; color: rgb(240, 255, 255); left: 586.134px;">*</span>
+   <span id="s11" style="position: absolute; top: 480.04px; font-family: &quot;Arial Black&quot;; font-size: 17px; color: rgb(204, 204, 221); left: 525.699px;">*</span>
+   <span id="s12" style="position: absolute; top: 86.88px; font-family: &quot;Arial Black&quot;; font-size: 24px; color: rgb(243, 243, 243); left: 62.2519px;">*</span>
+   <span id="s13" style="position: absolute; top: 246px; font-family: &quot;Comic Sans MS&quot;; font-size: 25px; color: rgb(240, 255, 255); left: 101.733px;">*</span>
+   <span id="s14" style="position: absolute; top: 80.32px; font-family: Times; font-size: 36px; color: rgb(221, 221, 255); left: 517.314px;">*</span>
+   <span id="s15" style="position: absolute; top: 68.44px; font-family: &quot;Comic Sans MS&quot;; font-size: 12px; color: rgb(204, 204, 221); left: 330.236px;">*</span>
+   <span id="s16" style="position: absolute; top: 377.8px; font-family: &quot;Arial Black&quot;; font-size: 40px; color: rgb(170, 170, 204); left: 289.072px;">*</span>
+   <span id="s17" style="position: absolute; top: 427.76px; font-family: &quot;Arial Black&quot;; font-size: 23px; color: rgb(221, 221, 255); left: 484.407px;">*</span>
+   <span id="s18" style="position: absolute; top: 510.64px; font-family: &quot;Arial Narrow&quot;; font-size: 47px; color: rgb(170, 170, 204); left: 304.767px;">*</span>
+   <span id="s19" style="position: absolute; top: 399.32px; font-family: &quot;Arial Black&quot;; font-size: 36px; color: rgb(221, 221, 255); left: 406.398px;">*</span>
+   <span id="s20" style="position: absolute; top: 500.72px; font-family: &quot;Arial Black&quot;; font-size: 31px; color: rgb(221, 221, 255); left: 60.3422px;">*</span>
+   <span id="s21" style="position: absolute; top: 382.8px; font-family: &quot;Arial Black&quot;; font-size: 40px; color: rgb(243, 243, 243); left: 287.271px;">*</span>
+   <span id="s22" style="position: absolute; top: 74.32px; font-family: Times; font-size: 36px; color: rgb(204, 204, 221); left: 98.7293px;">*</span>
+   <span id="s23" style="position: absolute; top: 72.4px; font-family: &quot;Comic Sans MS&quot;; font-size: 45px; color: rgb(243, 243, 243); left: 626.138px;">*</span>
+   <span id="s24" style="position: absolute; top: 571.32px; font-family: &quot;Comic Sans MS&quot;; font-size: 11px; color: rgb(204, 204, 221); left: 372.559px;">*</span>
+   <span id="s25" style="position: absolute; top: 320.76px; font-family: &quot;Comic Sans MS&quot;; font-size: 48px; color: rgb(170, 170, 204); left: 98.4091px;">*</span>
+   <span id="s26" style="position: absolute; top: 130.72px; font-family: Times; font-size: 31px; color: rgb(204, 204, 221); left: 17.9536px;">*</span>
+   <span id="s27" style="position: absolute; top: 168.84px; font-family: Times; font-size: 32px; color: rgb(240, 255, 255); left: 664.89px;">*</span>
+   <span id="s28" style="position: absolute; top: 543.32px; font-family: Times; font-size: 11px; color: rgb(240, 255, 255); left: 542.677px;">*</span>
+   <span id="s29" style="position: absolute; top: 537.04px; font-family: &quot;Comic Sans MS&quot;; font-size: 42px; color: rgb(170, 170, 204); left: 120.067px;">*</span>
+   <span id="s30" style="position: absolute; top: 138.16px; font-family: &quot;Ari
+</body>
+</html>
