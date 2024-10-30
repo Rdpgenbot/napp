@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Halloween Special Event</title>
+    <style>
+        /* বেসিক বডি স্টাইল */
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: #2c2c54;
+            background-image: radial-gradient(circle, #ff6b6b, #2c2c54);
+            font-family: Arial, sans-serif;
+            margin: 0;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        /* হেডার স্টাইল */
+        .header {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            padding: 10px 0;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            color: #ffbe76;
+            font-size: 1.2em;
+            text-shadow: 0 0 5px #f7d794, 0 0 10px #ff6b6b;
+            border-bottom: 2px solid #ff6b6b;
+        }
+
+        .header marquee {
+            font-weight: bold;
+            color: #ff7979;
+            text-shadow: 0 0 5px #ff7979, 0 0 10px #ff6b6b;
+        }
+
+        /* Halloween Glass Effect Container */
+        .glass-container {
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.8);
+            text-align: center;
+            width: 90%;
+            max-width: 400px;
+            position: relative;
+            animation: glow 3s infinite alternate;
+            margin-top: 80px;
+        }
+
+        /* Title */
+        h1 {
+            font-size: 2.5em;
+            color: #f7d794;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 5px #000;
+        }
+
+        /* TAP Pumpkin Text */
+        .tap-area {
+            border: 2px solid #ffbe76;
+            padding: 20px;
+            border-radius: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            margin-bottom: 20px;
+            animation: shake 2s infinite;
+        }
+        
+        .tap-title {
+            font-weight: bold;
+            font-size: 1.5em;
+            color: #ff7979;
+            margin-bottom: 15px;
+        }
+
+        /* Image */
+        #cowImage {
+            width: 100px;
+            height: 100px;
+            cursor: pointer;
+            filter: drop-shadow(0 0 10px orange);
+            transition: transform 0.2s ease;
+        }
+        #cowImage:hover {
+            transform: scale(1.1);
+        }
+
+        /* Progress Bar */
+        .progress-bar {
+            width: 80%;
+            height: 20px;
+            background-color: #444;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-top: 10px;
+        }
+        .progress {
+            height: 100%;
+            background-color: #ff7979;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        /* Points Text */
+        #points {
+            color: #f9ca24;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+
+        /* Message Text */
+        .message {
+            color: #dff9fb;
+            font-weight: bold;
+            margin-top: 15px;
+        }
+
+        /* Halloween Animation */
+        @keyframes glow {
+            from { box-shadow: 0 0 10px #ff6b6b, 0 0 20px #f7d794; }
+            to { box-shadow: 0 0 20px #ff6b6b, 0 0 30px #f7d794; }
+        }
+
+        @keyframes shake {
+            0% { transform: translate(1px, 1px) rotate(0deg); }
+            10% { transform: translate(-1px, -2px) rotate(-1deg); }
+            20% { transform: translate(-3px, 0px) rotate(1deg); }
+            30% { transform: translate(3px, 2px) rotate(0deg); }
+            40% { transform: translate(1px, -1px) rotate(1deg); }
+            50% { transform: translate(-1px, 2px) rotate(-1deg); }
+            60% { transform: translate(-3px, 1px) rotate(0deg); }
+            70% { transform: translate(3px, 1px) rotate(-1deg); }
+            80% { transform: translate(-1px, -1px) rotate(1deg); }
+            90% { transform: translate(1px, 2px) rotate(0deg); }
+            100% { transform: translate(1px, -2px) rotate(-1deg); }
+        }
+    </style>
+</head>
+<body>
+    <!-- হেডার অংশ -->
+    <div class="header">
+        <marquee behavior="scroll" direction="left">Welcome to the Halloween Special Event! Tap on the pumpkin to earn rewards!</marquee>
+    </div>
+
+    <div class="glass-container">
+        <h1>Halloween Special Event</h1>
+        <div class="tap-area">
+            <p class="tap-title">TAP PUMPKIN</p>
+            <img src="cow.png" id="cowImage" alt="Cow Image">
+            <p class="message" id="message">You earned 0 coins!</p>
+            <p id="points">Balance: 0 coins</p>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const cowImage = document.getElementById('cowImage');
+        const progressBar = document.getElementById('progress');
+        const pointsDisplay = document.getElementById('points');
+        const messageDisplay = document.getElementById('message');
+
+        let points = parseInt(getCookie('points')) || 0;
+        let progress = parseInt(getCookie('progress')) || 0;
+        let maxTaps = 2000;
+
+        const giftThresholds = [
+            {balance: 5000, gift: 'cow.png', message: 'Congratulations! You have unlocked gift1.png!'},
+            {balance: 10000, gift: 'gift2.txt', message: 'Congratulations! You have unlocked gift2.txt!'},
+            {balance: 15000, gift: 'gift3.jpg', message: 'Congratulations! You have unlocked gift3.jpg!'},
+            {balance: 20000, gift: 'gift4.docx', message: 'Congratulations! You have unlocked gift4.docx!'},
+            {balance: 25000, gift: 'gift5.pdf', message: 'Congratulations! You have unlocked gift5.pdf!'},
+            {balance: 30000, gift: 'gift6.mp3', message: 'Congratulations! You have unlocked gift6.mp3!'},
+            {balance: 35000, gift: 'gift7.zip', message: 'Congratulations! You have unlocked gift7.zip!'}
+        ];
+
+        updateDisplay();
+
+        cowImage.addEventListener('click', () => {
+            if (progress < maxTaps) {
+                progress += 10;
+                points += 10;
+                updateDisplay();
+                setCookie('points', points, 7);
+                setCookie('progress', progress, 7);
+                checkGiftUnlock();
+            } else {
+                messageDisplay.textContent = 'Fuel exhausted! Please wait...';
+            }
+        });
+
+        function updateDisplay() {
+            progressBar.style.width = (progress / maxTaps * 100) + '%';
+            pointsDisplay.textContent = `Balance: ${points} coins`;
+            messageDisplay.textContent = `You earned ${points} coins!`;
+        }
+
+        function checkGiftUnlock() {
+            giftThresholds.forEach(threshold => {
+                if (points === threshold.balance) {
+                    alert(threshold.message);
+                    downloadGift(threshold.gift);
+                }
+            });
+        }
+
+        function downloadGift(gift) {
+            const link = document.createElement('a');
+            link.href = gift;
+            link.download = gift;
+            link.click();
+        }
+
+        setInterval(() => {
+            if (progress > 0) {
+                progress -= 1;
+                updateDisplay();
+                setCookie('progress', progress, 7);
+            }
+        }, 200);
+
+        function setCookie(name, value, days) {
+            const d = new Date();
+            d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
+            document.cookie = `${name}=${value};expires=${d.toUTCString()};path=/`;
+        }
+
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+            return '';
+        }
+    </script>
+</body>
+</html>
